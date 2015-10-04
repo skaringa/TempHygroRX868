@@ -1,3 +1,8 @@
+/*
+ * Receiver for data of wireless weather sensors with RX868 and Raspberry Pi.
+ *
+ * Main program.
+ */
 #include <wiringPi.h>
 #include <stdio.h>
 #include <signal.h>
@@ -7,10 +12,17 @@ static volatile int keepRunning = 1;
 static DecoderOutput out;
 static volatile int hasOut = 0;
 
+/*
+ * Signal handler to catch Ctrl-C to terminate the program safely.
+ */
 void sigIntHandler(int dummy) {
   keepRunning = 0;
 } 
 
+/*
+ * Thread to read the output of the receiver module 
+ * and to decode it using Decoder.
+ */
 PI_THREAD (decoderThread) {
   piHiPri(50);
 
@@ -45,6 +57,11 @@ PI_THREAD (decoderThread) {
   }
 }
 
+/*
+ * MAIN
+ *
+ * Initialize the hardware and print the output of the Decoder.
+ */
 int main() {
   wiringPiSetup();
 /*

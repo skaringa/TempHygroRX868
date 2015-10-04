@@ -1,12 +1,23 @@
+/*
+ * Receiver for data of wireless weather sensors with RX868 and Raspberry Pi.
+ *
+ * Definition of decoder module.
+ */
 #pragma once
 
 #include <stdio.h>
 #include <list>
 
+/*
+ * Internal decoder state.
+ */
 typedef enum {
   WAIT, SYNC, DATA
 } EDecoderState;
 
+/*
+ * Value object to hold the decoded sensor values.
+ */
 typedef struct {
   int sensorType;
   const char* sensorTypeStr; 
@@ -19,9 +30,14 @@ typedef struct {
   int pressure;
 } DecoderOutput;
 
+/*
+ * The decoder.
+ */
 class Decoder {
   public:
     /*
+     * Constructor.
+     *
      * minLen, maxLen: min and max length of a valid pulse
      * in multiples of 1/sampleRate.
      * This default values work for a sample rate of 1/100 µs.
@@ -29,6 +45,7 @@ class Decoder {
     Decoder(int minLen = 5, int maxLen = 14);
     /*
      * Feed a ON-OFF pulse into the decoder.
+     *
      * len: The length of the whole pulse in samples.
      * lo: The length of the OFF part in samples.
      * return: true if a complete data packet is available.
@@ -36,6 +53,7 @@ class Decoder {
     bool pulse(int len, int lo);
     /*
      * Get the actual output of the decoder.
+     *
      * Should be called when pulse returns true.
      */
     DecoderOutput getDecoderOutput() const;
@@ -53,4 +71,7 @@ class Decoder {
     DecoderOutput decoderOutput;
 };
 
+/*
+ * Utility function to print DecoderOuput to standard output.
+ */
 void printDecoderOutput(DecoderOutput val);

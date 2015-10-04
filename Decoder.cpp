@@ -1,3 +1,8 @@
+/*
+ * Receiver for data of wireless weather sensors with RX868 and Raspberry Pi.
+ *
+ * Implementation of decoder module.
+ */
 #include <stdio.h>
 #include <time.h>
 #include <list>
