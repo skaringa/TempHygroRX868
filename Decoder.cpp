@@ -66,7 +66,9 @@ bool Decoder::pulse(int len, int lo) {
 int Decoder::popbits(int num) {
   int val = 0;
   if (data.size() < num) {
+#ifdef DEBUG
     printf("data exhausted\n");
+#endif
     return 0;
   }
   for (int i = 0; i < num; ++i) {
@@ -79,7 +81,9 @@ int Decoder::popbits(int num) {
 bool Decoder::expectEon() {
   // check end of nibble (1)
   if (popbits(1) != 1) {
+#ifdef DEBUG
     printf("end of nibble is not 1\n");
+#endif
     return false;
   }
   return true;
@@ -115,7 +119,9 @@ bool Decoder::decode() {
 
   // check
   if (check != 0) {
+#ifdef DEBUG
     printf("Check is not 0 but %d\n", check);
+#endif
     return false;
   }
 
@@ -124,7 +130,9 @@ bool Decoder::decode() {
   sum += 5;
   sum &= 0xF;
   if (sumRead != sum) {
+#ifdef DEBUG
     printf("Sum read is %d but computed is %d", sumRead, sum);
+#endif
     return false;
   }
 
